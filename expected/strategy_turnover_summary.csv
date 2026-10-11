@@ -1,0 +1,6 @@
+strategy,strategy_label,transition_days,mean_one_way_target_turnover,mean_one_way_target_turnover_pct
+ts_momentum,Time-series momentum,465,0.115913978495,11.591397849462
+cs_momentum,Cross-sectional momentum,465,0.201182795699,20.118279569892
+mean_reversion,Mean reversion,465,0.792473118280,79.247311827957
+vol_scaled,Volatility-scaled momentum,465,0.236989247312,23.698924731183
+mlp,MLP,465,0.474086021505,47.408602150538

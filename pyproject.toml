@@ -1,0 +1,18 @@
+[project]
+name = "slipclock"
+version = "0.1.0"
+description = "SlipClock reproduction package for intraday displayed-book execution-cost analysis"
+requires-python = ">=3.12"
+dependencies = [
+  "duckdb==1.5.4",
+  "exchange-calendars==4.13.2",
+  "matplotlib==3.11.1",
+  "numpy==2.5.1",
+  "pandas==3.0.3",
+  "polars==1.42.1",
+  "pyarrow==24.0.0",
+  "pytest==9.0.2",
+]
+
+[tool.uv]
+package = false

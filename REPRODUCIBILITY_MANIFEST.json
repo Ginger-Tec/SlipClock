@@ -1,0 +1,297 @@
+{
+  "anonymous": false,
+  "baseline": "L2-only one-minute displayed-book panel",
+  "data_policy": "Raw provider-licensed archives are excluded; compact aggregate inputs are included.",
+  "files": {
+    ".gitignore": {
+      "bytes": 456,
+      "sha256": "e45228d5cc98bc618b9af8197e8c4ff7fd3faf31f8a5ebf35c1d3adcf742568a"
+    },
+    "README.md": {
+      "bytes": 5207,
+      "sha256": "399522530bda01726c9b1bd0e4cffc5c8a4fc77960280edd4cb90adbc8b2abc0"
+    },
+    "data/derived/explorer/pit_daily_costs_all_notionals.parquet": {
+      "bytes": 5264419,
+      "sha256": "85ed1d760ac6f8ab162d7bc6148eedbc92717e2f7951678d82c85eb7d7360307"
+    },
+    "data/derived/factor_significance/factor_test_summary.csv": {
+      "bytes": 18663,
+      "sha256": "b0bfd5dca08f82d6d9810a7637298a57e2db4df79f501c618ec6c18333098f0d"
+    },
+    "data/derived/pit_adv_universe/oracle_vs_pit_adv30.csv": {
+      "bytes": 552,
+      "sha256": "75722dd568402f00b7f82e0d51e1073f2fb56ce7456628d2500c63123ebb442a"
+    },
+    "data/derived/pit_adv_universe/pit_summary.csv": {
+      "bytes": 17854,
+      "sha256": "703aca39f782a539fd4d5e2acbde5858bb65cc3307dca0565a41aa010e19298b"
+    },
+    "data/derived/pit_clock_anchors/clock_anchor_summary.csv": {
+      "bytes": 3370,
+      "sha256": "0202bb9cfb81521f1c9f1d67060b1e7bca372f106b203be3f31bf6c9dd9de305"
+    },
+    "data/derived/pit_clock_anchors/pit_daily_regime.parquet": {
+      "bytes": 119629,
+      "sha256": "663bf041d07bdd8b6402fd80a1d1acca8a6ffb9219b0d4e39195f347739b2df6"
+    },
+    "data/derived/pit_exact_clock/pit_adv30_exact_hour_surface.parquet": {
+      "bytes": 8667,
+      "sha256": "a8428785d6ada55a39a651b3d6487dfae88b9ec09b6f161a48b91ad102dae21b"
+    },
+    "data/derived/pit_exact_clock/pit_adv30_exact_lomo_window_detail.csv": {
+      "bytes": 264906,
+      "sha256": "9b9ec66e0626568550d5712488c05609963a8e46e1b1c283470f87bae42ae115"
+    },
+    "data/derived/pit_exact_clock/pit_adv30_exact_lomo_window_validation.csv": {
+      "bytes": 1553,
+      "sha256": "403f3e9ce53ef426bcbfc320471553b9609100c69735cce3b226fe7352745ab5"
+    },
+    "data/derived/pit_exact_clock/pit_adv30_exact_minute_surface.parquet": {
+      "bytes": 342625,
+      "sha256": "b2aee53a9adc7378724119676ad2b97aa0275773f045e2c4c3453e01ed1dc91f"
+    },
+    "data/derived/pit_exact_clock/pit_adv30_exact_window_contrasts.parquet": {
+      "bytes": 5479,
+      "sha256": "9d4c6b0eecbd6e8b11cebfa61dae34f0b532de09aa333214ed60f5cb4121d69f"
+    },
+    "data/derived/portfolio_execution/universe_capacity_curve.csv": {
+      "bytes": 1944,
+      "sha256": "ec251bc26fdebe5b4ce58abff9b86c03f567e51c6730b0e32ed6609f40aefe54"
+    },
+    "expected/paired_clock_effects.csv": {
+      "bytes": 1328,
+      "sha256": "ce883a687793b34719c7e4038593166e889e4349b6e61d2b70231053ecf11914"
+    },
+    "expected/pit_adv30_daily_mean_topn_costs.csv": {
+      "bytes": 1520,
+      "sha256": "d890d22857925f6616a74cbcfc89bc731e716c6183a6053076fc71f8f41c45bb"
+    },
+    "expected/pit_exact_clock_60m_contrasts.csv": {
+      "bytes": 676,
+      "sha256": "fbc4734f1f19e2f2b267618eb98fcf9546ac74bb6f213855f4e59b25108a418a"
+    },
+    "expected/strategy_claims.json": {
+      "bytes": 12299,
+      "sha256": "406db964dda6956a191f81dc0fb77e89b3cdab1d265ff41d6b652b05ff082e06"
+    },
+    "expected/strategy_turnover_summary.csv": {
+      "bytes": 423,
+      "sha256": "206fdf558858ce991ff3d6ba8c18e13cd02f8937bd1d764e5359ffe02d8baa5c"
+    },
+    "pyproject.toml": {
+      "bytes": 391,
+      "sha256": "2ded775a2cfd8ec22af29c01d3fe52a6740262fb04f938f537206e815be4680e"
+    },
+    "reproduce.py": {
+      "bytes": 1417,
+      "sha256": "9ae5268ad2d507882ef91ae42347a986bc6c5161594b2c9a3a8c849f6bc9a517"
+    },
+    "rewrite2/paper/build_assets.py": {
+      "bytes": 43629,
+      "sha256": "ab9a48428305a5bfeafaca842b3a538d58362c893f9ec816b17cf781f1957528"
+    },
+    "rewrite2/paper/build_compact_assets.py": {
+      "bytes": 6717,
+      "sha256": "4d56f2b9aec99258c90a73b694012f96641d8dfe41fa6698021f3612d7c426ba"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/data/clock_panel_1200_all.parquet": {
+      "bytes": 5323551,
+      "sha256": "05f4f6166f199e5766609ee2ed174a9bc1bfa8ecc2a6da0d415e051d5957a4a6"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/data/pit_adv30_mean_top100.parquet": {
+      "bytes": 729207,
+      "sha256": "26878cad31e0c6b1e1a974bb25e8bbf5b9e38e2a7f62913c5f413e85e368d412"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/data/posthoc_clock_oracle/clock_kline_marks.parquet": {
+      "bytes": 2277019,
+      "sha256": "d3d84e618a1f618d7770e815bc894a64b2129cd24d98022e7d6098451009b0f2"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/data/posthoc_clock_oracle/clock_selection.csv": {
+      "bytes": 493,
+      "sha256": "5f9843a4a658965d942465c567bdc7de22b57cf7d97f98dc75b07f583f3de95a"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/data/posthoc_clock_oracle/clock_states.parquet": {
+      "bytes": 7464541,
+      "sha256": "b6ad1c38696c335ed11865c6e7d9590f5ead1ee1f2ddc2afbdd72f9164b1a795"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/data/signal_prices_1159.parquet": {
+      "bytes": 1415916,
+      "sha256": "1e828dffbd338f321cf5c1d36c0e5c622af6525eddc7ed3664ce6b8b59805a33"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/data/signal_source_inventory.csv": {
+      "bytes": 2086421,
+      "sha256": "9673e22ee92f3cb25d8e8f6628ffb22f4a5736791f23ef26f47b9f138f54b375"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/experiment_core.py": {
+      "bytes": 49803,
+      "sha256": "ef9f62296821c056e3c002c12742044bdf4ad12bd9ab81a7e0f0ed8c44af2886"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/posthoc_clock_oracle.py": {
+      "bytes": 49346,
+      "sha256": "7f16bbf9e9c34d0d8b423df9a8e01cae51c47d3d1e23c3f05048ec3ac18179f6"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/run_experiment.py": {
+      "bytes": 42307,
+      "sha256": "9c107e1283c33784fd4f45d787bd7459073a913ce66a4c3d269775350fa35b0a"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/strategy_turnover.py": {
+      "bytes": 5609,
+      "sha256": "4857d2f5eec84159aeb48c22474b6e787e3d2be2951a9de02180c1c90a327638"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/tests/test_experiment_core.py": {
+      "bytes": 17480,
+      "sha256": "d6584bad88a71a470803957132fb3579947838ce715db9d91359e396a76bb772"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/tests/test_posthoc_clock_oracle.py": {
+      "bytes": 9781,
+      "sha256": "45453044a2d58ca561da51b876d9971c7d7690198f275357dd77710c78326a36"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/tests/test_strategy_turnover.py": {
+      "bytes": 794,
+      "sha256": "d46a47a4ef0e7683d9baca8232e6d48f0c64841f2004a7ffc7f2a1754ee3a6e6"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/verify_posthoc_clock_oracle.py": {
+      "bytes": 2209,
+      "sha256": "0412b978cc39b5b5d315d50599d24f1c1d05e300b12f1b6e56912d176e67236d"
+    },
+    "rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/verify_reproducibility.py": {
+      "bytes": 2245,
+      "sha256": "fd3bd9e3504827420fd341fe8738b268ebb5d3fca935de0fd1bbaf8dc0c94199"
+    },
+    "rewrite2/paper/fonts/libertine/GPL.txt": {
+      "bytes": 18618,
+      "sha256": "257bafb244950157bd65881b0c907fbe62195e3d06d27763b4658c8cc5e285b5"
+    },
+    "rewrite2/paper/fonts/libertine/LICENCE.txt": {
+      "bytes": 1181,
+      "sha256": "95e77ee9617df439760875ebf86c855c42ab1546a299f3eafa203648448488b1"
+    },
+    "rewrite2/paper/fonts/libertine/LinBiolinum_R.ttf": {
+      "bytes": 490340,
+      "sha256": "24c8d2306da9d9b14b6f747bf03bb0c66ebb63149f0ee2b90610a3637e27c985"
+    },
+    "rewrite2/paper/fonts/libertine/LinBiolinum_RB.ttf": {
+      "bytes": 516540,
+      "sha256": "4660f7da6e5b7f63f9d9894bfd800c7bac0e54dd89ed689087c7448492ce7e4e"
+    },
+    "rewrite2/paper/fonts/libertine/LinBiolinum_RI.ttf": {
+      "bytes": 532212,
+      "sha256": "e8e61b95d6a748cde30718fdbf102f8c5a2c168103ec3c07aaf053edf0124e86"
+    },
+    "rewrite2/paper/fonts/libertine/SOURCE.md": {
+      "bytes": 1776,
+      "sha256": "fefc16bee7e77d26d040bd00241ea4d56437e154eeded551fb300960969b8731"
+    },
+    "rewrite2/paper/fonts/noto_kr/OFL.txt": {
+      "bytes": 4053,
+      "sha256": "52e4d75a9931066ba4270ae9408045083ae79a721b066546e5c922e8ae7c209a"
+    },
+    "rewrite2/paper/fonts/noto_kr/SOURCE.md": {
+      "bytes": 1369,
+      "sha256": "9a38c95f19092f00e2b71f0c0d9680c3c1c41f7b4435afdfa76350bea0bed29f"
+    },
+    "rewrite2/paper/fonts/noto_kr/SlipClockNotoSansKR-Bold.ttf": {
+      "bytes": 9256,
+      "sha256": "4b5ff327edd4068342ab599f8b42e4841cf290d2f6ce2081a7ef6255a42a0722"
+    },
+    "rewrite2/paper/fonts/noto_kr/SlipClockNotoSansKR-Regular.ttf": {
+      "bytes": 9348,
+      "sha256": "c8a710faa3e9d5a02541ce81fa2233b35dbb77986391bba23139747168eadf78"
+    },
+    "rewrite2/paper/latexmkrc": {
+      "bytes": 96,
+      "sha256": "45e9c70f0d3a9d0ff4f6a9ea5f063fc49bd6a56ee5541e6286275b0dfdd08eb2"
+    },
+    "rewrite2/paper/paper_en.tex": {
+      "bytes": 43725,
+      "sha256": "abb0cda23c8205aebd5f6a58162735531ee08cd131e5bfa2fae95e5d120943a7"
+    },
+    "rewrite2/paper/paper_figure_style.py": {
+      "bytes": 3745,
+      "sha256": "5c322b9d2d851219601b45583b2b72034298d3f034fb4dc6ffb98c25a2dab3f1"
+    },
+    "rewrite2/paper/references.bib": {
+      "bytes": 8481,
+      "sha256": "b909f2b787070399b8583c824d058314c7988cf40560b451c4f1ea960fc3ad2c"
+    },
+    "rust/liq-l2-engine/Cargo.lock": {
+      "bytes": 40455,
+      "sha256": "ce8ac6af9dfb23452f85c900c73d57ced753cf7f54ff958cede6ee0cb16184ad"
+    },
+    "rust/liq-l2-engine/Cargo.toml": {
+      "bytes": 500,
+      "sha256": "4d0f1e93a202825a99e07282538685b410cae9f20fb77489781e49dde56c7cd5"
+    },
+    "rust/liq-l2-engine/README.md": {
+      "bytes": 3581,
+      "sha256": "2275385f4f3148e44331efb5d0a494b67ac5dab4d14732d01e6b9188e72900f3"
+    },
+    "rust/liq-l2-engine/src/book.rs": {
+      "bytes": 8320,
+      "sha256": "ea3e44ca2a454f55d5b799b9bf470c8c8bb83bc0d303f1849942282c371f4ebe"
+    },
+    "rust/liq-l2-engine/src/engine.rs": {
+      "bytes": 19090,
+      "sha256": "80f6579997f487cbb856a1979373a3b03749472b9f9d8a11da58256f232034ba"
+    },
+    "rust/liq-l2-engine/src/io.rs": {
+      "bytes": 14200,
+      "sha256": "254f2caf43a9743d14bf9980820d05a5c7212a6253431bb769da7d4f28bb7cc9"
+    },
+    "rust/liq-l2-engine/src/lib.rs": {
+      "bytes": 185,
+      "sha256": "efadbf9dc6b672ecbf6c0b2de89ff15d53adaf503838a9a34efb9acb8844c489"
+    },
+    "rust/liq-l2-engine/src/main.rs": {
+      "bytes": 15973,
+      "sha256": "32aaa2746cc04f30e5a5dd1bb0135db09cc23db397a4196dd8fbba01d7bcf1bb"
+    },
+    "rust/liq-l2-engine/src/model.rs": {
+      "bytes": 10643,
+      "sha256": "4d7b78c4c169d476f219e0fdbd4d3afdefe813f3e0374e78f22b8a31698a5503"
+    },
+    "rust/liq-l2-engine/src/output.rs": {
+      "bytes": 11676,
+      "sha256": "a6be8785a9d6d82208e5447588d21498b9e2d1bdce30be83946d5c17a6bd9c9a"
+    },
+    "rust/liq-l2-engine/tests/io_output_smoke.rs": {
+      "bytes": 13452,
+      "sha256": "db3693e396f217a91228a94ff38433cd3e9773d23a1db3e8cef9ca9b5435eb0c"
+    },
+    "scripts/build_l2_analysis_mart.py": {
+      "bytes": 19315,
+      "sha256": "2795e3f171116e66d454568e80a4d6813ef88208b3797af983aaae656646f996"
+    },
+    "scripts/tardis_l2_clock_anchor_diagnostics.py": {
+      "bytes": 31961,
+      "sha256": "f072d7a75a9e40f5adbe081e7ffc109a2593c9ce2992e645388845ae3654b4ae"
+    },
+    "scripts/tardis_l2_pit_adv_universe.py": {
+      "bytes": 25462,
+      "sha256": "bd0c9330fcd5947dd436c13941a7d096261eedd73ac9a62f33ac0405c1e94a02"
+    },
+    "scripts/tardis_l2_pit_exact_clock.py": {
+      "bytes": 34285,
+      "sha256": "bbb88ad42a57061d6aab465e91eca9d14c6eced747f9949272e3116c0ad3d502"
+    },
+    "scripts/tardis_l2_portfolio_execution_research.py": {
+      "bytes": 21333,
+      "sha256": "a91058f73786fba2b1a80c78b5196f34b974ae644d79940996d5b560c22c63a3"
+    },
+    "scripts/tardis_l2_prelim_research.py": {
+      "bytes": 20177,
+      "sha256": "b428f14639dbe884b85c5cf5dfe47caf7f9be14358d244f32d8173d8d298952e"
+    },
+    "uv.lock": {
+      "bytes": 166023,
+      "sha256": "c66f096f9d49572dbb530ddf60d41567ae6103da9d68c444934b6af062ab4262"
+    },
+    "verify_outputs.py": {
+      "bytes": 3942,
+      "sha256": "23620166debbf73cb3cdbee5e25835e01791cadde873ddc5cfdc9e21f0857fad"
+    }
+  },
+  "git_history_policy": "Publish from a new single-commit repository; do not copy the source repository history.",
+  "repository": "https://github.com/Ginger-Tec/SlipClock"
+}

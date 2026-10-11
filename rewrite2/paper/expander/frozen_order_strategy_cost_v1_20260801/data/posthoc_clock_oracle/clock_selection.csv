@@ -1,0 +1,4 @@
+clock,minute_of_day,time_utc,mean_probe_cost_bps,median_probe_cost_bps,mean_completion_rate,observed_dates,selection_universe,selection_notional_usd,selection_is_posthoc
+baseline_1200,720,12:00,28.173875478588,20.621271400868,0.996158798283,466,PIT ADV30-mean top100,100000,false
+oracle_low,705,11:45,25.357631380142,19.023235465567,0.996158798283,466,PIT ADV30-mean top100,100000,true
+oracle_high,480,08:00,30.771322178452,23.636820120259,0.996287553648,466,PIT ADV30-mean top100,100000,true

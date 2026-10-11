@@ -1,0 +1,550 @@
+\documentclass[sigconf,review,anonymous]{acmart}
+\usepackage{array}
+\usepackage{capt-of}
+\usepackage{graphicx}
+\usepackage{placeins}
+\microtypesetup{expansion=false}
+\setlength{\emergencystretch}{2em}
+\setlength{\vfuzz}{2pt}
+\flushbottom
+
+\AtBeginDocument{%
+  \providecommand\BibTeX{{Bib\TeX}}}
+
+\setcopyright{none}
+\copyrightyear{2026}
+\acmYear{2026}
+\acmDOI{}
+\acmConference[ICAIF '26]{7th ACM International Conference on AI in Finance}{November 14--17, 2026}{Milan, Italy}
+\acmISBN{}
+\settopmatter{printacmref=false}
+\renewcommand\footnotetextcopyrightpermission[1]{}
+
+\begin{document}
+
+\title[SlipClock]{SlipClock: A Conditional Displayed-Depth Cost Benchmark for Evaluating Financial AI Strategies in Crypto Futures}
+
+\author{Anonymous Authors}
+\affiliation{%
+  \institution{Anonymous Institution}
+  \country{}}
+
+\begin{abstract}
+Trading cost for a broad cross-sectional portfolio should be computed by aggregating conditional displayed-depth cost across its constituent orders. Order-level cost varies with contract, side, notional, and the contemporaneous L2 state. We propose \emph{SlipClock}, a point-in-time benchmark that selects the universe using historical information, applies a common submission-time feasibility policy, and prices each resulting frozen order against minute-level L2 states. Its estimand is static VWAP cost relative to the midpoint, conditional on filling the order entirely from displayed depth.
+
+Across 494,116,530 minute--contract states for Binance USD-margined futures from January 2024 through April 2026, costs varied systematically with clock time, universe, and per-contract order size. In an accounting decomposition of the cross-fitted high--low clock contrast, the half-spread accounted for about 1\%, while the remaining 99\% was attributed to filling against displayed depth beyond the best quote. Broader portfolios also cost more at the same submitted gross. Point-in-time universe selection produced mean costs 1.85--2.64 times those under ex-post selection. Mean conditional costs ranged from 6.709 to 56.111 bp across five strategies, including an MLP. Applying the same constant trading cost to every strategy cannot represent these strategy-specific differences. SlipClock evaluates each strategy's submitted, liquidity-gated orders under the same displayed-depth cost rule. The code is available at \url{https://github.com/Ginger-Tec/SlipClock}.
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10010405.10010455.10010460</concept_id>
+<concept_desc>Applied computing~Economics</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10002944.10011123.10011130</concept_id>
+<concept_desc>General and reference~Evaluation</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Applied computing~Economics}
+\ccsdesc[500]{General and reference~Evaluation}
+
+\keywords{market microstructure, transaction cost analysis, limit order books, cryptocurrency futures, execution-cost benchmarking, point-in-time evaluation}
+
+\maketitle
+
+\section{Introduction}
+The performance of a financial AI strategy depends on both its signal and the cost of the orders that signal creates. Accurate contract ranking can still overstate net performance if evaluation does not price the required orders. In cross-sectional rebalances, cost varies with contract, side, notional, and the submission-time L2 state, so portfolios with similar submitted gross can face different costs.
+
+Constant-rate deductions and representative-order estimates are useful sensitivity checks, but they suppress composition, order-size, and timing heterogeneity. A portfolio benchmark must select contracts from historical information, apply a common feasibility policy, match frozen orders to contemporaneous L2 states, and aggregate costs under a stated denominator. These choices define the estimand for consistent strategy comparisons.
+
+SlipClock fixes the sequence as \emph{Gate--Order--Match--Walk--Aggregate}. Historical information determines the universe and ranking; a common feasibility policy forms and freezes the order set. Each order is priced against displayed L2 depth in its assigned minute. Equal-notional controls identify clock-time, breadth, and order-size variation before the same calculation is applied to five systems, including an MLP.
+
+Our contributions are threefold:
+\begin{itemize}
+\item We define a point-in-time protocol for the full submitted, liquidity-gated order set with explicit feasibility, order attributes, and aggregation.
+\item Across 494,116,530 minute--contract states, we document cost variation by clock time, universe, and per-contract size under one immediate-fill rule.
+\item Applying the benchmark to five systems, including an MLP, yields mean conditional costs of 6.709--56.111 bp.
+\end{itemize}
+
+\section{Related Work}
+\paragraph{Book liquidity and immediate execution cost.}
+Depth beyond the inside spread measures the cost of trading a specified quantity, and open-limit-order-book liquidity changes around market events \cite{irvine2000liquidity,gomber2015liquidity}. Cryptocurrency studies compare liquidity measures, while evidence from equity and foreign-exchange markets shows that low-frequency spread proxies need not recover effective spreads equally well across settings \cite{brauneis2021,jahanparvar2023lowfrequency}. SlipClock adds the portfolio step by mapping a frozen cross-section of contract, side, notional, and time assignments to contemporaneous L2 states and one submitted-gross denominator.
+
+\paragraph{Execution paths and portfolio interactions.}
+Implementation shortfall measures the realized gap between a trading decision and its execution, while optimal-execution models allocate trades through time using price risk, market impact, and supply-demand recovery \cite{perold1988implementation,almgren2001,obizhaeva2013}. Portfolio execution and cross-impact research also allows trading in one asset to interact with another asset's liquidity or price response \cite{tsoukalas2019dynamic,min2022crosssectional}. SlipClock instead estimates the static displayed-depth cost of a submitted portfolio order set under a common immediate-fill rule; it does not estimate a trading path, realized implementation shortfall, or simultaneous cross-asset impact.
+
+\paragraph{Clock time in crypto markets.}
+Crypto markets exhibit fragmentation, arbitrage, and periodicity in volatility and liquidity; centralized exchanges also share recurrent intraday trading patterns \cite{makarov2020trading,hansen2024,brauneis2025}. Perpetual-futures pricing further depends on a scheduled funding mechanism \cite{ackerer2026perpetual}. SlipClock treats UTC and funding time as evaluation coordinates, not identified causal treatments. Its unit is the portfolio--date: orders and L2 states evaluated under one clock and historical-information rule.
+
+\paragraph{Financial AI environments and evaluation.}
+FinRL-Meta provides reusable financial reinforcement-learning environments \cite{liu2022finrlmeta}. ABIDES and JAX-LOB provide event-based and accelerated order-book simulators, while LOB-Bench standardizes diagnostics for generative order-book models \cite{byrd2020abides,frey2023jaxlob,nagy2025lobbench}. These systems organize model development or simulation; SlipClock evaluates the frozen orders produced downstream. This separates order-set evaluation from the market mechanism used to generate the orders. Financial evaluation also uses held-out asset-pricing data, addresses multiple-testing risk, and links anomaly returns to trading costs \cite{gu2020,harvey2016,novymarx2016}. Model cards motivate explicit reporting of evaluation conditions \cite{mitchell2019}. SlipClock fixes the information set, feasibility policy, order attributes, and denominator before comparing portfolio displayed-depth cost rules.
+
+\section{SlipClock: Protocol and Estimand}
+\subsection{Problem Definition and Ordered Composition}
+Let $\mathcal I_{t-1}$ denote the historical information available for UTC date $t$, and let $\mathcal L_{\theta,t}$ denote the submission-time L2 state admitted by protocol $\theta$. The protocol first defines the eligible universe and a signal ranking, after which a common feasibility policy forms an aggressive order vector:
+\begin{align}
+\mathcal U_{\theta,t}&=\mathsf{Gate}_{\theta}(\mathcal I_{t-1}),\notag\\
+\mathcal R_t&=\mathsf{Rank}(\mathcal U_{\theta,t};\mathcal I_{t-1}),\label{eq:gate-rank-order}\\
+\mathcal O_t&=\mathsf{Order}_{\theta}(\mathcal R_t;\mathcal L_{\theta,t}).\notag
+\end{align}
+The resulting order vector and submitted gross notional are
+\begin{equation}
+\mathcal O_t=\{o_j=(i_j,s_j,a_j,\tau_j)\}_{j=1}^{J_t},
+\qquad G^{\mathrm{sub}}_t=\sum_{j=1}^{J_t}a_j,
+\end{equation}
+where $i_j$ is a futures contract, $s_j\in\{+1,-1\}$ denotes buy or sell, $a_j>0$ is target USD notional set at the submission midpoint, and $\tau_j=(t,m_j)$ is the assigned UTC minute. $\mathsf{Order}_{\theta}$ traverses the historical ranking and retains candidates whose target order completes on the relevant side of the admitted L2 state. This is a common pre-execution policy, not a SlipClock cost rule: once it returns $\mathcal O_t$, contract, side, notional, and time are frozen and all cost rules receive the same submitted order IDs. The remaining SlipClock operations are
+\begin{equation}
+\mathcal B_{\theta}(\mathcal O_t\mid\mathcal U_{\theta,t})
+=\mathsf{Aggregate}_{\theta}\circ\mathsf{Walk}_{\theta}
+\circ\mathsf{Match}_{\theta}(\mathcal O_t\mid\mathcal U_{\theta,t}).
+\end{equation}
+Before evaluation costs or next-day outcomes are observed, $\theta$ fixes the historical information set, submission-time feasibility policy, displayed-depth fill rule, and aggregation denominator. No order attribute changes after the feasibility gate; consequently, the strategy estimand is conditional on this common completion policy.
+
+\subsection{Point-in-Time Universe Selection}
+Let $V_{i,t}$ be daily dollar volume for contract $i$. For trailing window $L$, define
+\begin{equation}
+A_{i,t}^{(L)}=\frac{1}{L}\sum_{\ell=1}^{L}V_{i,t-\ell},
+\qquad
+U_N(t)=\operatorname{TopN}_{i}\{A_{i,t}^{(L)}\}.
+\end{equation}
+Inclusion on date $t$ uses observations only through $t-1$. The primary rule ranks contracts by trailing 30-day mean volume, refreshes daily, and freezes included contracts during evaluation.
+
+\subsection{Minute-Level L2 State and Displayed-Depth Execution}
+For each contract and UTC date, we initialize the book from the first recorded snapshot after midnight and apply incremental L2 batches in the source-event order of exchange timestamps. The state for minute $m$ is the last reconstructed book reflecting all batches timestamped through that boundary. We neither interpolate between updates nor substitute OHLC bars.
+
+$\mathsf{Match}_{\theta}$ maps order key $(i_j,\tau_j)$ to the reconstructed L2 state for the same contract, date, and minute. A state is unavailable if it lacks a valid BBO.
+
+Let $p^A_{j1}$ and $p^B_{j1}$ be the best ask and bid. The midpoint and requested base quantity are
+\begin{equation}
+M_j=\frac{p^A_{j1}+p^B_{j1}}{2},
+\qquad Q_j=\frac{a_j}{M_j}.
+\end{equation}
+On side $s$, $(p^s_{jk},d^s_{jk})$ is the price and displayed quantity at level $k$, ordered outward from the best quote. Quantity consumed at level $k$ is
+\begin{equation}
+x^s_{jk}=\min\!\{d^s_{jk},
+[Q_j-\sum_{\ell<k}x^s_{j\ell}]_+\}.
+\end{equation}
+An order completes when $\sum_k x^s_{jk}=Q_j$. Conditional on completion,
+\begin{equation}
+P^{s}_{j,\mathrm{vwap}}=\frac{\sum_k p^s_{jk}x^s_{jk}}{Q_j},
+\qquad
+c_j=10{,}000\,s_j\!\left(\frac{P^{s}_{j,\mathrm{vwap}}}{M_j}-1\right).
+\end{equation}
+Thus $c_j>0$ means buying above or selling below the midpoint. An order that exceeds displayed depth is recorded as incomplete.
+
+\subsection{Expected Execution Cost and Submitted-Order Rates}
+Let $\mathcal S_t$ be submitted orders, $\mathcal E_t$ orders with valid point-in-time states, and $\mathcal F_t\subseteq\mathcal E_t$ orders fully completed by displayed depth. Count- and notional-based rates are
+\begin{align}
+\mathrm{Cov}_{\#}&=\frac{|\mathcal E_t|}{|\mathcal S_t|}, &
+\mathrm{Comp}_{\#}&=\frac{|\mathcal F_t|}{|\mathcal S_t|},\\
+\mathrm{Cov}_{\$}&=\frac{\sum_{j\in\mathcal E_t}a_j}{G^{\mathrm{sub}}_t}, &
+\mathrm{Comp}_{\$}&=\frac{\sum_{j\in\mathcal F_t}a_j}{G^{\mathrm{sub}}_t}.
+\end{align}
+They measure state coverage and displayed-depth completion. With completed gross $G^{\mathrm{exec}}_t=\sum_{j\in\mathcal F_t}a_j$, the completed-order mean cost, observed dollar cost, and submitted-gross cost estimate for dates with $G^{\mathrm{exec}}_t>0$ are
+\begin{align}
+C^{\mathrm{port}}_t
+ &=\frac{\sum_{j\in\mathcal F_t}a_jc_j}{G^{\mathrm{exec}}_t}, &
+D_t&=\sum_{j\in\mathcal F_t}a_j\frac{c_j}{10{,}000},\\
+R_t&=G^{\mathrm{sub}}_t\frac{C_t^{\mathrm{port}}}{10{,}000}.&&
+\end{align}
+$C_t^{\mathrm{port}}$ and $D_t$ are computed only from completed orders, whereas the denominators of $\mathrm{Cov}$ and $\mathrm{Comp}$ are submitted orders. SlipClock reports mean cost with both rates instead of assigning one cost value to incomplete orders. $R_t$ applies completed-order mean cost to submitted gross as a comparative estimate; it is distinct from observed expenditure $D_t$.
+
+On the controlled grid, let $c_{i,t}(m;q)$ be the mean cost of completed buy and sell control orders with notional $q$, and let $U_N^\ast(t,m;q)\subseteq U_N(t)$ contain contracts for which both control orders complete. Target-breadth two-sided completion is
+\[
+\mathrm{Comp}^{\leftrightarrow}_{N,t,m}(q)
+=\frac{|U_N^\ast(t,m;q)|}{N}.
+\]
+Cost is defined only where $U_N^\ast(t,m;q)$ is nonempty. Let
+\[
+\mathcal T_N(m;q)=\{t:|U_N^\ast(t,m;q)|>0\},
+\qquad T_N(m;q)=|\mathcal T_N(m;q)|.
+\]
+We first average contracts within a date--minute and then weight available dates equally:
+\begin{equation}
+\begin{aligned}
+C_N(t,m;q)&=\frac{1}{|U_N^\ast(t,m;q)|}
+\sum_{i\in U_N^\ast(t,m;q)}c_{i,t}(m;q),\\
+\bar C_N(m;q)&=\frac{1}{T_N(m;q)}
+\sum_{t\in\mathcal T_N(m;q)} C_N(t,m;q).
+\end{aligned}
+\end{equation}
+If a date--minute state row exists but $U_N^\ast(t,m;q)$ is empty, conditional cost is omitted and completion remains zero; a missing state row remains missing. Daily evaluability is
+\[
+\begin{aligned}
+A_N(t;q)&=\{i\in U_N(t):\exists m,\ i\in U_N^\ast(t,m;q)\},\\
+\mathrm{Eval}_{N,t}(q)&=\frac{|A_N(t;q)|}{|U_N(t)|}.
+\end{aligned}
+\]
+Writing the same quantity under inclusion rule $g$ as $C_{N,g}(t,m;q)$, condition-specific costs are summarized as
+\begin{equation}
+\mathcal S(N,q,m,g)=\big(\mathbb E_t[C_{N,g}],Q_{0.90,t}(C_{N,g}),
+\overline{\mathrm{Eval}}_{N,g},\overline{\mathrm{Comp}}^{\leftrightarrow}_{N,g}\big).
+\end{equation}
+Here $N$, $q$, $m$, and $g$ denote target breadth, per-contract notional, submission time, and inclusion rule. General strategy orders use submitted-order $\mathrm{Cov}$ and $\mathrm{Comp}$; equal-notional buy and sell control orders use daily evaluability and two-sided completion.
+
+\subsection{When Does a Constant Trading Cost Reproduce Strategy-Level Differences?}
+Fix a common protocol and failure policy. For system $r$, let $P_r$ be hypothetical markout P\&L on protocol-completed quantity, $G^{\mathrm{exec}}_r$ completed gross, and $D_r$ SlipClock dollar cost. A constant trading-cost assumption of $\lambda$ bp and SlipClock produce
+\begin{equation}
+\Pi_r^{\lambda}=P_r-\frac{\lambda}{10{,}000}G^{\mathrm{exec}}_r,
+\qquad \Pi_r^{\mathrm{SC}}=P_r-D_r.
+\end{equation}
+\paragraph{Proposition 1 (exact equivalence of strategy-level cost gaps).}
+A constant cost of $\lambda$ bp reproduces every pairwise SlipClock-adjusted markout difference over systems $\mathcal R$ if and only if there exists a constant $\kappa$ such that
+\begin{equation}
+D_r=\frac{\lambda}{10{,}000}G^{\mathrm{exec}}_r+\kappa
+\qquad\text{for every }r\in\mathcal R.
+\end{equation}
+Indeed, equality of pairwise adjusted differences is equivalent to $D_a-D_b=\lambda(G^{\mathrm{exec}}_a-G^{\mathrm{exec}}_b)/10{,}000$ for every pair $(a,b)$, which is precisely the affine condition. A constant cost is therefore not a neutral adjustment that merely makes every evaluation more conservative. It ignores the effects of contract, side, size, and clock time and assumes that completed gross alone determines cost through a common affine relation. When this condition fails, approximation errors differ by strategy; a constant cost may miss the SlipClock cost differences even if rankings remain unchanged.
+
+In the equal-gross strategy experiment below, holding completed gross fixed isolates cross-strategy variation in contract and side composition under the common displayed-depth rule; constant-rate costs are identical under this control.
+
+Write the strategy-specific approximation error as the daily protocol residual
+\begin{equation}
+e_{r,t}(\lambda,\theta)=D_{r,t}(\theta)
+-\frac{\lambda}{10{,}000}G^{\mathrm{exec}}_{r,t}(\theta).
+\label{eq:protocol-residual}
+\end{equation}
+When $e_{r,t}>0$, the constant-cost assumption understates SlipClock cost. The discrepancy between the adjusted markout gaps of systems $a$ and $b$ is
+\begin{equation}
+\big(\Pi^{\lambda}_{a,t}-\Pi^{\lambda}_{b,t}\big)
+-\big(\Pi^{\mathrm{SC}}_{a,t}-\Pi^{\mathrm{SC}}_{b,t}\big)
+=e_{a,t}(\lambda,\theta)-e_{b,t}(\lambda,\theta).
+\label{eq:pairwise-distortion}
+\end{equation}
+A reversal occurs when this residual difference exceeds the original performance gap. Its absence does not establish that a constant cost reproduces strategy-specific differences under the conditional displayed-depth estimand.
+
+\subsection{Transaction-Cost-Adjusted Performance for Frozen Orders}
+For prediction or portfolio system $r$, map the submitted vector $\mathcal O_{r,t}$ after the feasibility gate to protocol-completed quantity $\widetilde{\mathcal O}_{r,t}^{\theta}$ and evaluate
+\begin{equation}
+\Pi^{\mathrm{protocol\text{-}adj}}_{r,t}(\theta)
+=\Pi^{\mathrm{paper}}_{r,t}\!\left(\widetilde{\mathcal O}_{r,t}^{\theta}\right)
+-D_{r,t}(\theta)-F_{r,t}(\theta),
+\end{equation}
+where $F_{r,t}$ includes fees or other add-on costs. Both hypothetical markout and cost use completed quantity; partial fills require a separate execution path, while carried positions receive no new entry cost.
+
+\section{Empirical Design}
+\subsection{Data and Point-in-Time Panel}
+The sample contains minute-level L2 states from 00:01 to 23:59 UTC for Binance USD-margined futures from January 1, 2024 through April 30, 2026. The 718-contract count includes every USDT- or USDC-quoted contract observed at least once in the archived L2 panel during the sample, including contracts that later became inactive or were delisted. We exclude 00:00 because it lacks a common initialization state. Table~\ref{tab:data-universe} reports the analysis panel and point-in-time universes ranked by prior-day ADV30.
+
+\begin{table}[tbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4.2pt}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\multicolumn{4}{@{}l}{\textbf{Panel A. Sample hierarchy}} \\
+\midrule
+Level & \multicolumn{3}{r}{Count} \\
+\midrule
+Minute--contract states & \multicolumn{3}{r}{494,116,530} \\
+Distinct futures contracts & \multicolumn{3}{r}{718} \\
+Contract--date cost rows & \multicolumn{3}{r}{343,656} \\
+Portfolio--date--minute rows & \multicolumn{3}{r}{5,993,435} \\
+UTC evaluation dates & \multicolumn{3}{r}{833} \\
+LOMO evaluation months & \multicolumn{3}{r}{28} \\
+\midrule
+\multicolumn{4}{@{}l}{\textbf{Panel B. Primary PIT universes}} \\
+\midrule
+Universe & Mean daily contracts & Eval. rate & Min. ADV30 \\
+\midrule
+Top-25  & 24.97  & 99.87\% & \$272.4M \\
+Top-50  & 49.90  & 99.80\% & \$134.5M \\
+Top-100 & 99.70  & 99.70\% & \$52.1M \\
+Top-150 & 149.42 & 99.62\% & \$26.9M \\
+Top-200 & 199.11 & 99.56\% & \$16.2M \\
+\bottomrule
+\end{tabular}
+\caption{Empirical sample and point-in-time universes. Panel B reports daily means when contracts are ranked by ADV30 observed through the previous day. The evaluable rate is the daily fraction of selected contracts with observed two-sided \$100,000 cost in at least one minute.}
+\label{tab:data-universe}
+\end{table}
+
+\subsection{Control Orders and Comparison Designs}
+The reference order vector assigns an equal-midpoint-notional buy order and sell order to every selected contract. Their mean measures costs across clock time, breadth, and order size without a predictive signal. Strategy experiments do not impute this average; they apply the same displayed-depth calculation to each strategy's frozen orders.
+
+The minute-level design measures clock-time costs for top-25, top-100, and top-200 universes at $q=\$100{,}000$ per contract. Within each date--minute, we first average contracts for which both buy and sell orders complete and then weight dates and the 1,439 observed minute positions equally. The daily design first averages minutes with two-sided costs within contract--date to compare three order sizes and five universes. The designs differ in aggregation order and minute-level availability.
+
+Because the main design fixes per-contract notional, submitted gross rises with breadth. A complementary design exactly matches $G^{\mathrm{sub}}=Nq$ across observed $q$-grid combinations at four gross levels; it does not interpolate costs.
+
+We assess universe-selection results using ex-post selection, a reference without liquidity screening, 12 alternative point-in-time selection rules, and official funding and XNYS calendars.
+
+\subsection{Cross-Fitted Clock Contrasts}
+Clock windows are selected without the evaluation month. Fix $q=\$100{,}000$ and suppress $q$. Let $D_h$ denote dates in month $h$, $D_{-h}$ all other dates, and $D_{-h,N}(m)=D_{-h}\cap\mathcal T_N(m)$. Means below are defined when their availability set is nonempty. For each universe,
+\begin{equation}
+\bar C_{N,-h}(m)=\frac{1}{|D_{-h,N}(m)|}
+\sum_{t\in D_{-h,N}(m)}C_N(t,m).
+\end{equation}
+For date $t$, let $M_N(t,W)=\{m\in W:t\in\mathcal T_N(m)\}$ be minutes in window $W$ with defined cost. Window cost is
+\begin{equation}
+C_N(t,W)=\frac{1}{|M_N(t,W)|}
+\sum_{m\in M_N(t,W)}C_N(t,m).
+\end{equation}
+Among all circular 60-minute UTC windows, $W_{L,N,-h}$ minimizes and $W_{H,N,-h}$ maximizes selection-sample mean cost. If $D^{HL}_{h,N}$ contains held-out-month dates with both window costs, then
+\begin{equation}
+\widehat\Delta_{N,h}=\frac{1}{|D^{HL}_{h,N}|}
+\sum_{t\in D^{HL}_{h,N}}
+[C_N(t,W_{H,N,-h})-C_N(t,W_{L,N,-h})].
+\end{equation}
+Across 28 monthly folds, each date contributes once to windows selected without its month. We use 10,000 calendar-month block-bootstrap repetitions for 95\% intervals. Scheduled-anchor contrasts subtract the pre-event baseline ($-10$ to $-2$ minutes) from the event window (0 to $+2$ minutes) on the same date.
+
+\subsection{Aggregation and Reported Statistics}
+Daily p90 is the 90th percentile of date-level portfolio cost. Clock estimates are paired within date and inferred with calendar-month block bootstraps.
+
+To separate the best quote from deeper displayed liquidity, we also report $C-S/2$, where $S$ is the quoted spread in bp. This accounting decomposition separates the half-spread from the additional cost of filling against deeper quotes under static displayed-depth execution; it does not estimate structural price impact. For cross-fitted decomposition, we align cost and spread at the date--minute observations in the selected high and low 60-minute windows and jointly resample daily paired vectors in the same calendar-month blocks. Daily evaluability and two-sided completion accompany the main results.
+
+\subsection{Frozen-Order Strategies and Performance Evaluation}
+We compare frozen orders from five systems under identical conditions from January 2025 through April 2026. The eligible universe is the point-in-time top 100 by trailing 30-day mean quoted dollar volume, and every signal uses information available by 12:00 UTC on the previous day. At 12:00 UTC the common feasibility policy traverses each historical ranking and retains the first 20 candidates that can complete a \$100,000 order on the relevant side. Across the sample, it skipped 366 candidates while forming 46,600 newly submitted orders; identical contract, side, notional, and time inputs then enter all six cost rules.
+
+Time-series momentum takes the 20 highest-ADV contracts and uses the sign of trailing 20-day return. Cross-sectional momentum buys the top 10 and sells the bottom 10 by trailing 20-day return. Mean reversion buys the bottom 10 and sells the top 10 by one-day return. Volatility-scaled momentum ranks trailing 20-day return divided by realized volatility over the same period. The MLP predicts next-day midpoint return from lagged returns, realized volatility, and point-in-time ADV rank. It is refit monthly on a trailing one-year sample, with a label embargo separating training information from evaluation.
+
+Performance is a one-way next-day holding markout net of entry cost, not round-trip executable P\&L; Sharpe ratios annualize daily returns by $\sqrt{365}$. Each evaluable date is treated as a one-way entry diagnostic: submitted orders are not netted against the previous target vector, and exit costs are outside the estimand. The primary endpoint is the next-day 12:00 UTC L2 midpoint: 224 of 46,600 order markouts use the same contract's 11:59 close when that midpoint is unavailable, 18 dates without a valid entry L2 state carry the latest frozen position vector and use 11:59 close-to-close returns without a new entry cost, and 63 order-date evaluations with absolute raw moves above 100\% are assigned zero evaluation return. These valuation rules can affect markout and Sharpe levels, but not submitted order IDs or the strategy-specific entry-cost estimates that are the primary outcome.
+
+\section{Condition-Specific Trading Costs}
+\subsection{Recurrent Intraday Cost Patterns}
+The minute-level results in Figure~\ref{fig:clock} share a low-cost region near 10--11 UTC and a high-cost region near 21--22 UTC across all three universes. Broader universes have higher levels and wider gaps between these regions; their ordering persists in daily estimates with a different aggregation order.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\linewidth]{figures/pit_exact_minute_100k_top25_top100_top200.pdf}
+\caption{Minute-level displayed-depth cost at \$100,000 per contract. Contracts are averaged within date, then dates receive equal weight. All three point-in-time universes share a low-cost region near 10--11 UTC and a high-cost region near 21--22 UTC.}
+\Description{Line chart with UTC time on the horizontal axis and displayed-depth cost in basis points on the vertical axis. Top-25, top-100, and top-200 differ in level, but all are low near 10 to 11 UTC and high near 21 to 22 UTC.}
+\label{fig:clock}
+\end{figure}
+
+The high--low clock ordering persists when adjacent minutes are aggregated into 30-, 60-, or 120-minute windows. Longer windows smooth the profile, so the main comparison uses the 60-minute LOMO design.
+
+Cross-fitted high-minus-low differences were positive for all three universes, and their calendar-month block intervals excluded zero.
+
+\begin{table}[tbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\multicolumn{5}{@{}l}{\textbf{Panel A. Cross-fitted 60-minute high--low windows}} \\
+\midrule
+Universe & Diff. & Block 95\% CI & Positive share & Two-sided comp. (\%) \\
+\midrule
+Top-25  & 0.874 & [0.512, 1.351] & 0.762 & 99.86 / 99.86 \\
+Top-100 & 2.309 & [1.282, 3.676] & 0.777 & 99.69 / 99.69 \\
+Top-200 & 3.477 & [1.956, 5.444] & 0.774 & 99.53 / 99.53 \\
+\midrule
+\multicolumn{5}{@{}l}{\textbf{Panel B. Depth decomposition in the same windows}} \\
+\midrule
+Universe & $\Delta C$ & $\tfrac12\Delta S$ & $\Delta(C-S/2)$ & Depth share \\
+\midrule
+Top-25  & 0.874 & 0.011 & 0.863 & 98.79\% \\
+Top-100 & 2.309 & 0.025 & 2.284 & 98.92\% \\
+Top-200 & 3.477 & 0.017 & 3.460 & 99.51\% \\
+\bottomrule
+\end{tabular}
+\caption{Cross-fitted 60-minute high--low clock contrasts and depth decomposition at \$100,000 per contract. Costs and spreads are in bp; completion is reported for high/low windows.}
+\label{tab:clock-spread}
+\end{table}
+
+Decomposing each clock contrast, the half-spread accounted for about 1\%, while the remaining 99\% came from filling against displayed quotes beyond the best price. The recurrent intraday difference is therefore associated mainly with deeper displayed liquidity.
+
+The sign was broad in calendar support while its magnitude varied by regime (Figure~\ref{fig:calendar-regimes}). The contrast was positive in 27 of 28 months for top-25 and 26 of 28 months for top-100 and top-200. All three series peaked in October 2025, but excluding that month left equal-weighted means of 0.698, 1.827, and 2.785 bp. The breadth ordering therefore did not depend on that episode.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\columnwidth]{figures/pit_daily_regime_and_lomo_compact.pdf}
+\caption{Daily displayed-L2 cost and cross-fitted clock contrasts from January 1, 2024 through April 30, 2026. Panel (a) shows raw daily cost (faint) and trailing 30-calendar-day means (solid) at \$100,000 per contract. Panel (b) shows monthly high-minus-low differences for 60-minute windows selected without the evaluation month.}
+\Description{Two vertically stacked time-series panels. The top panel shows raw daily costs and trailing 30-day means for top-25, top-100, and top-200 universes. The bottom panel shows cross-fitted monthly high-minus-low clock contrasts, which are mostly positive and largest for broader universes.}
+\label{fig:calendar-regimes}
+\end{figure}
+
+\subsection{Breadth, Scale, and Selection}
+Both mean and p90 cost increased with universe breadth and order size. In the fixed-per-contract design, greater breadth also raised submitted gross.
+
+\begin{table}[tbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{9.0pt}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\multicolumn{5}{@{}l}{\textbf{Panel A. Breadth at \$100,000 per contract}} \\
+\midrule
+Universe & Mean & Daily p90 & Ref. budget & Evaluable / comp. (\%) \\
+\midrule
+Top-25  & 7.215  & 12.366 & \$1,804  & 99.87 / 99.86 \\
+Top-50  & 12.421 & 24.776 & \$6,211  & 99.80 / 99.79 \\
+Top-100 & 20.444 & 40.941 & \$20,444 & 99.70 / 99.70 \\
+Top-150 & 27.452 & 56.367 & \$41,178 & 99.62 / 99.60 \\
+Top-200 & 33.555 & 67.808 & \$67,110 & 99.56 / 99.54 \\
+\midrule
+\multicolumn{5}{@{}l}{\textbf{Panel B. Per-contract notional sensitivity}} \\
+\midrule
+Universe & \$1k & \$10k & \$100k & $100k/1k$ \\
+\midrule
+Top-25  & 0.724 & 1.736 & 7.215  & 9.96 \\
+Top-100 & 1.864 & 4.484 & 20.444 & 10.97 \\
+Top-200 & 2.737 & 6.880 & 33.555 & 12.26 \\
+\midrule
+\multicolumn{5}{@{}l}{\textbf{Panel C. Ex-post cost selection versus PIT selection}} \\
+\midrule
+Universe & Ex post & PIT & Difference & PIT / ex post \\
+\midrule
+Top-25  & 2.736  & 7.215  & 4.479  & 2.637 \\
+Top-50  & 5.014  & 12.421 & 7.407  & 2.477 \\
+Top-100 & 9.685  & 20.444 & 10.759 & 2.111 \\
+Top-150 & 13.911 & 27.452 & 13.541 & 1.973 \\
+Top-200 & 18.102 & 33.555 & 15.453 & 1.854 \\
+\bottomrule
+\end{tabular}
+\caption{Daily trading costs by breadth, notional, and selection rule. Means and p90 values are in bp; Panel C compares point-in-time selection with an ex-post diagnostic selection.}
+\label{tab:breadth-scale-eligibility}
+\end{table}
+
+The selection rule and information set materially change cost levels. Ex-post selection uses outcome information and produces costs that are unavailable in actual portfolio formation, whereas the full eligible panel without liquidity screening shows the high costs of contracts with little displayed depth.
+
+Broader combinations were also more expensive at the same submitted gross. This contrast combines contract composition with per-contract size.
+
+In a complementary linear-relation diagnostic, a relationship fitted in 2024 lost substantial explanatory power after 2025 and left large normalized residuals. Together with the equal-gross comparison, this shows that submitted gross alone cannot explain trading cost.
+
+\begin{table}[tbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2.9pt}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+Submitted gross & Narrow & Broad & Cost gap [95\% CI] & Evaluable rate \\
+\midrule
+\$0.1M & $1\!\times\!\$100k$ & $100\!\times\!\$1k$ & 1.795 [1.604, 2.003] & 100.000 / 99.705 \\
+\$0.2M & $2\!\times\!\$100k$ & $200\!\times\!\$1k$ & 2.619 [2.339, 2.923] & 100.000 / 99.556 \\
+\$1.0M & $10\!\times\!\$100k$ & $100\!\times\!\$10k$ & 1.506 [0.992, 2.080] & 99.988 / 99.705 \\
+\$2.0M & $20\!\times\!\$100k$ & $200\!\times\!\$10k$ & 0.832 [0.374, 1.333] & 99.838 / 99.556 \\
+\bottomrule
+\end{tabular}
+\caption{Completion-conditional daily mean-cost gap between broad and narrow combinations at the same submitted gross (bp). Brackets give calendar-month block 95\% CIs; evaluable rates are narrow/broad.}
+\label{tab:fixed-gross-affine}
+\end{table}
+
+\subsection{Scheduled Anchors and Universe-Selection Robustness}
+In the within-date comparisons of Table~\ref{tab:anchors-robustness}, cost was higher around funding times and the XNYS open and close than in their pre-event baselines. Contrasts were larger when funding schedules overlapped. At all four anchors, most of the cost change came from displayed depth beyond the best quote rather than from the half-spread. The estimand is a paired within-date association between scheduled clock time and cost.
+
+The breadth ordering held under all 12 alternative point-in-time selection rules. The choice of rule changed mean and upper-tail costs, but every rule produced a higher top-200 mean than its top-25 counterpart.
+
+\begin{table}[tbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2.1pt}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+\multicolumn{6}{@{}l}{\textbf{Panel A. Scheduled anchors, top-200}} \\
+\midrule
+Anchor & Funding share & $\Delta C$ & $\Delta S$ & $\Delta(C-S/2)$ & Block 95\% CI \\
+\midrule
+04, 12, 20 UTC funding & 49.96\% & 1.630 & 0.044 & 1.608 & [1.192, 2.136] \\
+08, 16 UTC overlap & 99.79\% & 3.098 & 0.052 & 3.072 & [2.596, 3.623] \\
+XNYS cash open & 0.00\% & 0.980 & 0.086 & 0.937 & [0.744, 1.232] \\
+XNYS cash close & 33.10\% & 1.665 & 0.085 & 1.622 & [1.168, 2.255] \\
+\midrule
+\multicolumn{6}{@{}l}{\textbf{Panel B. Ranges across 12 PIT liquidity rules}} \\
+\midrule
+Universe & \multicolumn{2}{c}{Mean range} & \multicolumn{2}{c}{Daily p90 range} & Evaluable range \\
+\midrule
+Top-25  & \multicolumn{2}{c}{5.502--10.056} & \multicolumn{2}{c}{7.800--19.648} & 99.50--99.99\% \\
+Top-100 & \multicolumn{2}{c}{16.329--23.023} & \multicolumn{2}{c}{28.876--51.067} & 99.50--99.91\% \\
+Top-200 & \multicolumn{2}{c}{28.644--35.340} & \multicolumn{2}{c}{50.393--73.929} & 99.36--99.90\% \\
+\bottomrule
+\end{tabular}
+\caption{Scheduled anchors and point-in-time universe-selection robustness. Panel A subtracts the same-date pre-event baseline ($-10$ to $-2$ minutes) from the event window (0 to $+2$ minutes). Costs and spreads are in bp. Panel B uses \$100,000 per contract.}
+\label{tab:anchors-robustness}
+\end{table}
+
+\subsection{Exploratory Out-of-Sample Predictability}
+We denote the seven-lag exponentially weighted cost anchor by A7. For the same PIT top-100 contract and UTC time, it forecasts the next mean cost of \$100,000 buy and sell control orders from past eligible costs. At lag position $k\in\{1,\ldots,7\}$, the raw weight is $0.5(1-0.5)^{k-1}$ and the eligible calendar gap is $k$--$3k$ days; available weights are renormalized before averaging in $\log(1+C)$ space. The specification was frozen on 2024--2025 data. On the common 117-day 2026 one-step-ahead sample, A7 achieved 9.858 bp MAE, 8.25\% below Lag1 and 1.08\% below a fixed-weight three-lag average; date-clustered 95\% intervals for the A7-minus-baseline differences were $[-0.997,-0.773]$ and $[-0.133,-0.083]$ bp. A ridge adjustment using spread, BBO imbalance and depth, ADV, UTC time, and lagged cost was 0.149 bp worse than A7. This diagnostic concerns conditional displayed-depth cost, not realized slippage or capacity.
+
+\section{Strategy-Specific Trading Costs}
+\begin{figure*}[tbp]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/frozen_strategy_cost_cumulative_en.pdf}
+\caption{Cumulative one-way next-day holding markout under six cost rules for the same frozen orders. All inputs except the cost rule are identical.}
+\Description{Cumulative entry-cost-adjusted next-day holding markout for five frozen-order strategies before costs and under constant trading costs, the half-spread, and SlipClock.}
+\label{fig:frozen-strategy-cost}
+\end{figure*}
+
+\subsection{Strategy Costs and Performance}
+Table~\ref{tab:frozen-strategy-cost} compares performance before costs, constant trading costs, the half-spread, and SlipClock on the same frozen orders.
+
+\begin{table}[tbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2.0pt}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+& Turnover & SC cost & \multicolumn{2}{c}{Sharpe} & \multicolumn{2}{c}{Terminal markout} \\
+\cmidrule(lr){4-5}\cmidrule(l){6-7}
+Strategy & \% & bp & Before & SC & Before & SC \\
+\midrule
+Time-series momentum & 11.591 & 6.709 & 0.259 & -0.206 & 0.348 & -0.277 \\
+Cross-sectional momentum & 20.118 & 56.111 & 0.165 & -3.431 & 0.236 & -4.994 \\
+Mean reversion & 79.247 & 51.699 & 0.122 & -3.522 & 0.159 & -4.659 \\
+Volatility momentum & 23.699 & 38.320 & 0.020 & -2.716 & 0.026 & -3.546 \\
+MLP & 47.409 & 37.060 & 0.473 & -2.513 & 0.543 & -2.911 \\
+\bottomrule
+\end{tabular}
+\caption{One-way evaluation before trading costs and under SlipClock (SC) for frozen-order strategies. Turnover is mean one-way target-vector turnover across 465 consecutive retained entry-date transitions, $\sum_i |x_{i,t}-x_{i,t-1}|/(2G)$, with fixed target gross $G=\$2$ million. Terminal markout is cumulative next-day holding markout in USD millions across 484 evaluated dates from January 2025 through April 2026.}
+\label{tab:frozen-strategy-cost}
+\end{table}
+
+Mean conditional displayed-depth costs ranged from 6.709 to 56.111 bp. Cross-sectional momentum had the second-lowest mean target-vector turnover (20.118\%) but the highest mean SlipClock cost (56.111 bp), so turnover alone did not explain the cross-strategy cost ranking; this pattern is consistent with the liquidity composition of selected contracts also affecting costs. With identical completed gross, constant assumptions of 5, 10, and 20 bp could not distinguish trading costs across strategies, while mean normalized residuals relative to 10 bp ranged from $-3.291$ to 46.111 bp. Under the reported one-way markout convention, all five terminal markouts were positive before costs and negative under SlipClock (Figure~\ref{fig:frozen-strategy-cost}); this is a descriptive evaluation diagnostic rather than round-trip executable P\&L. Reversals in 3 of 10 Sharpe pairs and 4 of 10 markout pairs occurred because strategy-specific cost differences exceeded the original performance gaps.
+
+Cost gaps persisted under joint calendar-month resampling and on dates shared by each strategy pair. In a common top-20 ADV diagnostic, the cost range narrowed, suggesting that contract selection contributes to the observed differences. MLP mean cost remained near 36 bp across the examined seed and label-embargo variants.
+
+\subsection{Time-of-Day Costs for Identical Orders}
+Changing only submission time evaluates the same order against a different L2 state. In Figure~\ref{fig:strategy-clock-exposure} and Table~\ref{tab:paired-clock-effects}, mean cost rises for every strategy from the low-cost 11:45 UTC condition to the 12:00 baseline and the higher-cost 08:00 comparison condition. The 08:00-minus-11:45 gaps range from 0.770 bp for time-series momentum to 10.479 bp for mean reversion, and all five calendar-month block 95\% CIs exceed zero. The effect of submission time differs with each strategy's contract and side composition.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\columnwidth]{figures/strategy_clock_cost_exposure_compact.pdf}
+\caption{Mean time-of-day cost for identical orders. Values on the right are 08:00 minus 11:45 UTC; 12:00 UTC is the baseline.}
+\Description{For each of five strategies, points connect mean displayed L2 entry costs at the low-cost 11:45 UTC condition, the 12:00 baseline, and the higher-cost 08:00 comparison condition. Costs rise in that order for every strategy; the 08:00-minus-11:45 gap is smallest for time-series momentum and largest for mean reversion.}
+\label{fig:strategy-clock-exposure}
+\end{figure}
+
+\begin{table}[tbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3.1pt}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Strategy & Cost saving & Net difference & Net difference [95\% CI] \\
+\midrule
+Time-series momentum & 0.072 & -0.044 & [-0.490, 0.400] \\
+Cross-sectional momentum & 0.928 & 1.089 & [0.439, 1.668] \\
+Mean reversion & 0.977 & 0.262 & [-0.630, 1.186] \\
+Volatility momentum & 0.654 & 0.981 & [0.438, 1.533] \\
+MLP & 0.577 & 0.350 & [-0.426, 1.163] \\
+\bottomrule
+\end{tabular}
+\caption{Markout difference between 11:45 and 08:00 UTC (USD millions). Cost saving is the 08:00 entry cost minus the 11:45 entry cost; CIs jointly resample 16 calendar months.}
+\label{tab:paired-clock-effects}
+\end{table}
+
+All three times use the same contract, side, and notional for the 46,600 orders admitted by the common 12:00 UTC feasibility policy; completion at the comparison times is therefore reported for this liquidity-gated order set. Mean costs for equal-notional buy and sell control orders were 25.358, 28.174, and 30.771 bp at 11:45, 12:00, and 08:00 UTC. The same change in submission time produced cost changes of 0.770--10.479 bp depending on strategy composition.
+
+The low-cost time reduced cumulative entry costs by USD 0.072--0.977 million across the five strategies. After next-day price changes, cross-sectional and volatility momentum had positive net-difference intervals; the other intervals included zero. This is a diagnostic that maps identical orders to the clock-time cost range observed during evaluation, not a separately estimated timing strategy.
+
+\section{Discussion and Scope}
+Control orders show how clock time, breadth, per-contract notional, and universe selection change conditional displayed-depth costs; strategy orders show the additional role of composition. Constant costs remain useful for sensitivity analysis but cannot replace order-level measurement, because costs differ even at fixed submitted gross.
+
+SlipClock is a pre-execution benchmark for the static midpoint-relative cost of immediately filling frozen orders from displayed L2 depth. Realized slippage and capacity, including fees, funding, hidden liquidity, queue position, and dynamic impact, require separate fill data and execution paths.
+
+The A7 diagnostic finds limited out-of-sample information in recent same-contract, same-time cost and motivates extensions using order side, size, and incomplete-fill probability.
+
+\section{Conclusion}
+SlipClock evaluates feasibility-gated frozen orders against contemporaneous minute-level L2 states and aggregates them under a stated execution estimand. Conditional displayed-depth costs varied with clock time, composition, per-contract notional, and universe-selection rule, ranging from 6.709 to 56.111 bp across five strategies.
+
+A constant cost cannot represent these order-level differences. Financial AI evaluation should report both signal performance and the conditional displayed-depth cost of submitted orders, while keeping realized-execution claims outside the benchmark's scope; performance-order changes are a secondary consequence when cost gaps exceed the original gaps.
+
+\FloatBarrier
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,346 @@
+{
+  "comparisons": {
+    "no_cost_vs_fixed_10bp": {
+      "cumulative_net_pnl_reversals": 0,
+      "net_sharpe_reversals": 0,
+      "strategy_pairs": 10,
+      "terminal_markout_reversals": 0
+    },
+    "no_cost_vs_fixed_20bp": {
+      "cumulative_net_pnl_reversals": 0,
+      "net_sharpe_reversals": 2,
+      "strategy_pairs": 10,
+      "terminal_markout_reversals": 0
+    },
+    "no_cost_vs_fixed_5bp": {
+      "cumulative_net_pnl_reversals": 0,
+      "net_sharpe_reversals": 0,
+      "strategy_pairs": 10,
+      "terminal_markout_reversals": 0
+    },
+    "no_cost_vs_half_spread": {
+      "cumulative_net_pnl_reversals": 0,
+      "net_sharpe_reversals": 0,
+      "strategy_pairs": 10,
+      "terminal_markout_reversals": 0
+    },
+    "no_cost_vs_slipclock": {
+      "cumulative_net_pnl_reversals": 4,
+      "net_sharpe_reversals": 3,
+      "strategy_pairs": 10,
+      "terminal_markout_reversals": 4
+    }
+  },
+  "experiment": "frozen_order_strategy_cost_v1_20260801",
+  "sample": {
+    "additional_complete_case_excluded_dates": 0,
+    "calendar_dates": 484,
+    "carried_evaluation_dates": 18,
+    "carried_return_outlier_orders_zeroed": 2,
+    "carry_missing_price_pairs": 0,
+    "common_date_retention": 1.0,
+    "entry_state_coverage": 1.0,
+    "entry_state_valid_orders": 46600,
+    "entry_unavailable_signal_rank_replacements": 366,
+    "evaluated_calendar_dates": 484,
+    "evaluation_markout_availability": 1.0,
+    "evaluation_markout_available_orders": 46600,
+    "frozen_orders": 46600,
+    "incomplete_relevant_side_orders": 0,
+    "invalid_selected_orders_before_complete_case_filter": 0,
+    "kline_fallback_markout_orders": 224,
+    "missing_all_markout_source_orders": 0,
+    "missing_l2_dates": 18,
+    "missing_next_day_l2_mid_orders": 224,
+    "missing_or_invalid_entry_state_orders": 0,
+    "next_day_l2_markout_availability": 0.9951931330472104,
+    "next_day_l2_markout_available_orders": 46376,
+    "orders_per_strategy_day": 20,
+    "ordinary_return_outlier_orders_zeroed": 61,
+    "relevant_side_complete_orders": 46600,
+    "relevant_side_completion": 1.0,
+    "retained_dates": 466,
+    "strategy_dates_with_entry_replacements": 341,
+    "submitted_gross_usd": 2000000.0,
+    "submitted_orders_before_complete_case_filter": 46600,
+    "unique_return_outlier_symbol_days_zeroed": 23,
+    "vector_generation_dates": 466
+  },
+  "strategies": {
+    "cs_momentum": {
+      "label_en": "Cross-sectional momentum",
+      "label_ko": "횡단면 모멘텀",
+      "mean_residual_10bp_bps": 46.11114722809818,
+      "mean_residual_bps_by_constant_rate": {
+        "fixed_10bp": 46.11114722809818,
+        "fixed_20bp": 36.11114722809818,
+        "fixed_5bp": 51.11114722809818
+      },
+      "slipclock_mean_cost_bps": 56.11114722809818,
+      "treatments": {
+        "fixed_10bp": {
+          "cumulative_net_pnl_usd": -696336.3554252558,
+          "net_sharpe": -0.48847279646050323,
+          "pnl_rank": 3,
+          "sharpe_rank": 3,
+          "terminal_entry_cost_adjusted_markout_usd": -696336.3554252558
+        },
+        "fixed_20bp": {
+          "cumulative_net_pnl_usd": -1628336.3554252558,
+          "net_sharpe": -1.141398735764851,
+          "pnl_rank": 3,
+          "sharpe_rank": 2,
+          "terminal_entry_cost_adjusted_markout_usd": -1628336.3554252558
+        },
+        "fixed_5bp": {
+          "cumulative_net_pnl_usd": -230336.35542525587,
+          "net_sharpe": -0.16163694138818982,
+          "pnl_rank": 3,
+          "sharpe_rank": 3,
+          "terminal_entry_cost_adjusted_markout_usd": -230336.35542525587
+        },
+        "half_spread": {
+          "cumulative_net_pnl_usd": 71985.19866630291,
+          "net_sharpe": 0.05052297744255395,
+          "pnl_rank": 3,
+          "sharpe_rank": 3,
+          "terminal_entry_cost_adjusted_markout_usd": 71985.19866630291
+        },
+        "no_cost": {
+          "cumulative_net_pnl_usd": 235663.6445747441,
+          "net_sharpe": 0.16543322207421027,
+          "pnl_rank": 3,
+          "sharpe_rank": 3,
+          "terminal_entry_cost_adjusted_markout_usd": 235663.6445747441
+        },
+        "slipclock": {
+          "cumulative_net_pnl_usd": -4993895.277084006,
+          "net_sharpe": -3.4310672705501633,
+          "pnl_rank": 5,
+          "sharpe_rank": 4,
+          "terminal_entry_cost_adjusted_markout_usd": -4993895.277084006
+        }
+      }
+    },
+    "mean_reversion": {
+      "label_en": "Mean reversion",
+      "label_ko": "평균회귀",
+      "mean_residual_10bp_bps": 41.69890384833926,
+      "mean_residual_bps_by_constant_rate": {
+        "fixed_10bp": 41.69890384833926,
+        "fixed_20bp": 31.69890384833926,
+        "fixed_5bp": 46.69890384833926
+      },
+      "slipclock_mean_cost_bps": 51.698903848339256,
+      "treatments": {
+        "fixed_10bp": {
+          "cumulative_net_pnl_usd": -772647.9622290372,
+          "net_sharpe": -0.5925635887051289,
+          "pnl_rank": 4,
+          "sharpe_rank": 4,
+          "terminal_entry_cost_adjusted_markout_usd": -772647.9622290372
+        },
+        "fixed_20bp": {
+          "cumulative_net_pnl_usd": -1704647.9622290372,
+          "net_sharpe": -1.3069785067966244,
+          "pnl_rank": 4,
+          "sharpe_rank": 4,
+          "terminal_entry_cost_adjusted_markout_usd": -1704647.9622290372
+        },
+        "fixed_5bp": {
+          "cumulative_net_pnl_usd": -306647.9622290371,
+          "net_sharpe": -0.23520381315125813,
+          "pnl_rank": 4,
+          "sharpe_rank": 4,
+          "terminal_entry_cost_adjusted_markout_usd": -306647.9622290371
+        },
+        "half_spread": {
+          "cumulative_net_pnl_usd": 17849.85978053473,
+          "net_sharpe": 0.013693090504559458,
+          "pnl_rank": 4,
+          "sharpe_rank": 4,
+          "terminal_entry_cost_adjusted_markout_usd": 17849.85978053473
+        },
+        "no_cost": {
+          "cumulative_net_pnl_usd": 159352.03777096292,
+          "net_sharpe": 0.12223821535161894,
+          "pnl_rank": 4,
+          "sharpe_rank": 4,
+          "terminal_entry_cost_adjusted_markout_usd": 159352.03777096292
+        },
+        "slipclock": {
+          "cumulative_net_pnl_usd": -4658985.800894257,
+          "net_sharpe": -3.521609718067896,
+          "pnl_rank": 4,
+          "sharpe_rank": 5,
+          "terminal_entry_cost_adjusted_markout_usd": -4658985.800894257
+        }
+      }
+    },
+    "mlp": {
+      "label_en": "MLP",
+      "label_ko": "MLP",
+      "mean_residual_10bp_bps": 27.060256572205336,
+      "mean_residual_bps_by_constant_rate": {
+        "fixed_10bp": 27.060256572205336,
+        "fixed_20bp": 17.060256572205336,
+        "fixed_5bp": 32.06025657220533
+      },
+      "slipclock_mean_cost_bps": 37.06025657220533,
+      "treatments": {
+        "fixed_10bp": {
+          "cumulative_net_pnl_usd": -389302.9594236716,
+          "net_sharpe": -0.3393418982823261,
+          "pnl_rank": 1,
+          "sharpe_rank": 1,
+          "terminal_entry_cost_adjusted_markout_usd": -389302.9594236716
+        },
+        "fixed_20bp": {
+          "cumulative_net_pnl_usd": -1321302.9594236717,
+          "net_sharpe": -1.1519357517103634,
+          "pnl_rank": 1,
+          "sharpe_rank": 3,
+          "terminal_entry_cost_adjusted_markout_usd": -1321302.9594236717
+        },
+        "fixed_5bp": {
+          "cumulative_net_pnl_usd": 76697.04057632832,
+          "net_sharpe": 0.06684654501316077,
+          "pnl_rank": 1,
+          "sharpe_rank": 1,
+          "terminal_entry_cost_adjusted_markout_usd": 76697.04057632832
+        },
+        "half_spread": {
+          "cumulative_net_pnl_usd": 427868.39708426385,
+          "net_sharpe": 0.37282208461695215,
+          "pnl_rank": 1,
+          "sharpe_rank": 1,
+          "terminal_entry_cost_adjusted_markout_usd": 427868.39708426385
+        },
+        "no_cost": {
+          "cumulative_net_pnl_usd": 542697.0405763283,
+          "net_sharpe": 0.472934294014668,
+          "pnl_rank": 1,
+          "sharpe_rank": 1,
+          "terminal_entry_cost_adjusted_markout_usd": 542697.0405763283
+        },
+        "slipclock": {
+          "cumulative_net_pnl_usd": -2911318.871953209,
+          "net_sharpe": -2.5134322999356744,
+          "pnl_rank": 2,
+          "sharpe_rank": 2,
+          "terminal_entry_cost_adjusted_markout_usd": -2911318.871953209
+        }
+      }
+    },
+    "ts_momentum": {
+      "label_en": "Time-series momentum",
+      "label_ko": "시계열 모멘텀",
+      "mean_residual_10bp_bps": -3.291459247846778,
+      "mean_residual_bps_by_constant_rate": {
+        "fixed_10bp": -3.291459247846778,
+        "fixed_20bp": -13.291459247846777,
+        "fixed_5bp": 1.708540752153222
+      },
+      "slipclock_mean_cost_bps": 6.708540752153222,
+      "treatments": {
+        "fixed_10bp": {
+          "cumulative_net_pnl_usd": -583695.4239975798,
+          "net_sharpe": -0.43362686297445857,
+          "pnl_rank": 2,
+          "sharpe_rank": 2,
+          "terminal_entry_cost_adjusted_markout_usd": -583695.4239975798
+        },
+        "fixed_20bp": {
+          "cumulative_net_pnl_usd": -1515695.4239975798,
+          "net_sharpe": -1.1257456896155567,
+          "pnl_rank": 2,
+          "sharpe_rank": 1,
+          "terminal_entry_cost_adjusted_markout_usd": -1515695.4239975798
+        },
+        "fixed_5bp": {
+          "cumulative_net_pnl_usd": -117695.42399757996,
+          "net_sharpe": -0.08744439410894134,
+          "pnl_rank": 2,
+          "sharpe_rank": 2,
+          "terminal_entry_cost_adjusted_markout_usd": -117695.42399757996
+        },
+        "half_spread": {
+          "cumulative_net_pnl_usd": 310061.53967936063,
+          "net_sharpe": 0.23038393612087135,
+          "pnl_rank": 2,
+          "sharpe_rank": 2,
+          "terminal_entry_cost_adjusted_markout_usd": 310061.53967936063
+        },
+        "no_cost": {
+          "cumulative_net_pnl_usd": 348304.57600242,
+          "net_sharpe": 0.2588025594566276,
+          "pnl_rank": 2,
+          "sharpe_rank": 2,
+          "terminal_entry_cost_adjusted_markout_usd": 348304.57600242
+        },
+        "slipclock": {
+          "cumulative_net_pnl_usd": -276931.42209826026,
+          "net_sharpe": -0.20555649745137772,
+          "pnl_rank": 1,
+          "sharpe_rank": 1,
+          "terminal_entry_cost_adjusted_markout_usd": -276931.42209826026
+        }
+      }
+    },
+    "vol_scaled": {
+      "label_en": "Volatility-normalized momentum",
+      "label_ko": "변동성 정규화 모멘텀",
+      "mean_residual_10bp_bps": 28.319772545444277,
+      "mean_residual_bps_by_constant_rate": {
+        "fixed_10bp": 28.319772545444277,
+        "fixed_20bp": 18.319772545444277,
+        "fixed_5bp": 33.31977254544427
+      },
+      "slipclock_mean_cost_bps": 38.31977254544428,
+      "treatments": {
+        "fixed_10bp": {
+          "cumulative_net_pnl_usd": -906215.376556384,
+          "net_sharpe": -0.7032613843313791,
+          "pnl_rank": 5,
+          "sharpe_rank": 5,
+          "terminal_entry_cost_adjusted_markout_usd": -906215.376556384
+        },
+        "fixed_20bp": {
+          "cumulative_net_pnl_usd": -1838215.376556384,
+          "net_sharpe": -1.4254168463692236,
+          "pnl_rank": 5,
+          "sharpe_rank": 5,
+          "terminal_entry_cost_adjusted_markout_usd": -1838215.376556384
+        },
+        "fixed_5bp": {
+          "cumulative_net_pnl_usd": -440215.3765563841,
+          "net_sharpe": -0.3417524498229472,
+          "pnl_rank": 5,
+          "sharpe_rank": 5,
+          "terminal_entry_cost_adjusted_markout_usd": -440215.3765563841
+        },
+        "half_spread": {
+          "cumulative_net_pnl_usd": -109115.98752132036,
+          "net_sharpe": -0.08472965669919648,
+          "pnl_rank": 5,
+          "sharpe_rank": 5,
+          "terminal_entry_cost_adjusted_markout_usd": -109115.98752132036
+        },
+        "no_cost": {
+          "cumulative_net_pnl_usd": 25784.623443615827,
+          "net_sharpe": 0.020024532848607085,
+          "pnl_rank": 5,
+          "sharpe_rank": 5,
+          "terminal_entry_cost_adjusted_markout_usd": 25784.623443615827
+        },
+        "slipclock": {
+          "cumulative_net_pnl_usd": -3545618.1777917906,
+          "net_sharpe": -2.7161010150322986,
+          "pnl_rank": 3,
+          "sharpe_rank": 3,
+          "terminal_entry_cost_adjusted_markout_usd": -3545618.1777917906
+        }
+      }
+    }
+  }
+}
