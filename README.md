@@ -25,7 +25,7 @@ not included.
 .
 ├── data/derived/                 # compact control-order aggregates
 ├── expected/                     # frozen paper-facing verification targets
-├── rewrite2/paper/               # review manuscript snapshot and asset builders
+├── rewrite2/paper/               # camera-ready manuscript and asset builders
 │   ├── fonts/                    # pinned publication-figure fonts and licenses
 │   └── expander/.../             # frozen-order strategy-cost experiment
 ├── rust/liq-l2-engine/           # L2 replay and fixed-notional book walk
@@ -102,7 +102,7 @@ uv run pytest -q rewrite2/paper/expander/frozen_order_strategy_cost_v1_20260801/
 uv run python verify_outputs.py
 ```
 
-After reproduction, compile the review manuscript snapshot with:
+After reproduction, compile the camera-ready manuscript with:
 
 ```bash
 cd rewrite2/paper

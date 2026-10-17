@@ -1,4 +1,4 @@
-\documentclass[sigconf,review,anonymous]{acmart}
+\documentclass[sigconf]{acmart}
 \usepackage{array}
 \usepackage{capt-of}
 \usepackage{graphicx}
@@ -11,23 +11,82 @@
 \AtBeginDocument{%
   \providecommand\BibTeX{{Bib\TeX}}}
 
-\setcopyright{none}
+% TODO(camera-ready): Compare with the actual CMT-submitted PDF when it is available.
+\setcopyright{cc}
+\setcctype{by-nc-nd}
 \copyrightyear{2026}
 \acmYear{2026}
-\acmDOI{}
-\acmConference[ICAIF '26]{7th ACM International Conference on AI in Finance}{November 14--17, 2026}{Milan, Italy}
-\acmISBN{}
-\settopmatter{printacmref=false}
-\renewcommand\footnotetextcopyrightpermission[1]{}
+\acmDOI{10.1145/3858063.3858813}
+\acmConference[ICAIF '26]{7th ACM International Conference on AI in Finance}{November 14--17, 2026}{Milan, AA, Italy}
+\acmBooktitle{7th ACM International Conference on AI in Finance (ICAIF '26), November 14--17, 2026, Milan, AA, Italy}
+\acmISBN{979-8-4007-3087-0/2026/11}
+\settopmatter{printacmref=true,printccs=true,authorsperrow=4}
+% Allow long author emails to wrap without changing their metadata.
+\appto\UrlBigBreaks{\do\@}
 
 \begin{document}
 
 \title[SlipClock]{SlipClock: A Conditional Displayed-Depth Cost Benchmark for Evaluating Financial AI Strategies in Crypto Futures}
 
-\author{Anonymous Authors}
+\author{Seunghan Son}
+\authornote{First author.}
+\orcid{0009-0000-2902-9999}
 \affiliation{%
-  \institution{Anonymous Institution}
-  \country{}}
+  \institution{Independent Researcher}
+  \city{Seoul}
+  \country{Republic of Korea}}
+\email{qzpm5n@g.skku.edu}
+
+\author{Doohwi Cha}
+\orcid{0009-0000-2513-6965}
+\affiliation{%
+  \institution{Mirae Asset Securities}
+  \city{Seoul}
+  \country{Republic of Korea}}
+\email{doohwicha@gmail.com}
+
+\author{Minjae Lee}
+\orcid{0000-0002-8937-9605}
+\affiliation{%
+  \institution{Independent Researcher}
+  \city{Seoul}
+  \country{Republic of Korea}}
+\email{abraxasnz13@gmail.com}
+
+\author{Juyeong Lee}
+\orcid{0000-0002-4619-925X}
+\affiliation{%
+  \institution{EY Consulting}
+  \city{Seoul}
+  \country{Republic of Korea}}
+\email{juyeong.lee0839@gmail.com}
+
+\author{Minsuk Sung}
+\orcid{0009-0007-2282-6873}
+\affiliation{%
+  \institution{Korea University}
+  \city{Seoul}
+  \country{Republic of Korea}}
+\email{minsuksung@korea.ac.kr}
+
+\author{Donghwa Seo}
+\orcid{0009-0003-5718-1535}
+\affiliation{%
+  \institution{DS Investment \& Securities}
+  \city{Seoul}
+  \country{Republic of Korea}}
+\email{properitas95@kaist.ac.kr}
+
+\author{Yoontae Hwang}
+\authornote{Corresponding author.}
+\orcid{0000-0002-5856-1914}
+\affiliation{%
+  \institution{Pusan National University}
+  \city{Busan}
+  \country{Republic of Korea}}
+\email{yoontae.hwang@pusan.ac.kr}
+
+\renewcommand{\shortauthors}{Son et al.}
 
 \begin{abstract}
 Trading cost for a broad cross-sectional portfolio should be computed by aggregating conditional displayed-depth cost across its constituent orders. Order-level cost varies with contract, side, notional, and the contemporaneous L2 state. We propose \emph{SlipClock}, a point-in-time benchmark that selects the universe using historical information, applies a common submission-time feasibility policy, and prices each resulting frozen order against minute-level L2 states. Its estimand is static VWAP cost relative to the midpoint, conditional on filling the order entirely from displayed depth.
@@ -544,6 +603,12 @@ SlipClock evaluates feasibility-gated frozen orders against contemporaneous minu
 A constant cost cannot represent these order-level differences. Financial AI evaluation should report both signal performance and the conditional displayed-depth cost of submitted orders, while keeping realized-execution claims outside the benchmark's scope; performance-order changes are a secondary consequence when cost gaps exceed the original gaps.
 
 \FloatBarrier
+\section*{Disclaimer}
+The views expressed are solely those of the authors and do not represent EY Consulting, Mirae Asset Securities, or DS Investment \& Securities. The authors are responsible for any errors or omissions. This paper is for academic purposes only and does not constitute investment advice, a recommendation, solicitation, or an offer to buy or sell financial products or securities.
+
+\section*{Acknowledgements}
+This research was supported by the Basic Science Research Program through the National Research Foundation of Korea (NRF), funded by the Ministry of Education (RS-2026-25576625), and by an NRF grant funded by the Korean government (MSIT) (RS-2023-00242528).
+
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}
 

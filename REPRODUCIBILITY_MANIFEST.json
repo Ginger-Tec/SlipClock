@@ -8,8 +8,8 @@
       "sha256": "e45228d5cc98bc618b9af8197e8c4ff7fd3faf31f8a5ebf35c1d3adcf742568a"
     },
     "README.md": {
-      "bytes": 5207,
-      "sha256": "399522530bda01726c9b1bd0e4cffc5c8a4fc77960280edd4cb90adbc8b2abc0"
+      "bytes": 5201,
+      "sha256": "79d7b76b5dcda1ed74bd2514a9ce6242cfd9ad0a11edffd4ed5eabae587a6991"
     },
     "data/derived/explorer/pit_daily_costs_all_notionals.parquet": {
       "bytes": 5264419,
@@ -86,6 +86,14 @@
     "reproduce.py": {
       "bytes": 1417,
       "sha256": "9ae5268ad2d507882ef91ae42347a986bc6c5161594b2c9a3a8c849f6bc9a517"
+    },
+    "rewrite2/paper/ACM-Reference-Format.bst": {
+      "bytes": 93560,
+      "sha256": "ee0d9fd846b95ca8b9b7721e8d9aaa066c64c9e7a61284c6315cfbb844794a39"
+    },
+    "rewrite2/paper/acmart.cls": {
+      "bytes": 122400,
+      "sha256": "6895475b24fe526c12831f5cc1d16f37218ce5d65161f811dde4bce8dc4551b9"
     },
     "rewrite2/paper/build_assets.py": {
       "bytes": 43629,
@@ -204,8 +212,8 @@
       "sha256": "45e9c70f0d3a9d0ff4f6a9ea5f063fc49bd6a56ee5541e6286275b0dfdd08eb2"
     },
     "rewrite2/paper/paper_en.tex": {
-      "bytes": 43725,
-      "sha256": "abb0cda23c8205aebd5f6a58162735531ee08cd131e5bfa2fae95e5d120943a7"
+      "bytes": 46013,
+      "sha256": "acdc89b1ab77a851aee47f85be8bb25694afa0d32329058c291335df65cf3b12"
     },
     "rewrite2/paper/paper_figure_style.py": {
       "bytes": 3745,
